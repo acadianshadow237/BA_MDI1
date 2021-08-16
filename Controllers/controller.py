@@ -9,7 +9,7 @@ def connectToDatabase(url):
     db1.init_model(engine)
     session = db1.DBSession()
     #setupDatabase(engine)
-    return session, engine
+    return session 
 
 def getSession(url):
     pass
@@ -55,10 +55,13 @@ def simpleUpdate(ID,nfieldName,newValue,tableName):
     print(my_sql)
 
 
-def writeLog(currentLog,):
+def writeLog(currentLog):
         pass
         
+def get_county(session):
+    db = Table('VCountyNames',metadata, autoload_with = engine)
 
+    
         
 ##----------------------------------------------------------------------
 #def addRecord(session, data):

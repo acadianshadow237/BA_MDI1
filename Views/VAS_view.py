@@ -105,8 +105,17 @@ class VAS_view(Ui_VAS_Form):
        
 
     def setup_county(self):
-        c1 = county_select(self)
-        self.comboBoxCounty.addItems(c1.get_county())
+        my_list = [''] 
+        db = self.my_db_tables.VCounty
+        stmt = select(db.c.county_name).order_by(db.c.county_name)
+        results = self.my_session.query(stmt)
+        for item in results.scalars():
+            #print(item)
+            my_list.append(item)
+            pass
+        
+        self.comboBoxCounty.addItems(my_list)
+
 
     def setup_route(self):
         if self.comboBoxCounty.currentIndex == 0:
@@ -160,81 +169,21 @@ class VAS_view(Ui_VAS_Form):
             self.my_VAS_DD_Theaders = None
 
             my_item = ''  
-            my_keys = [] 
+            my_vas_keys = [] 
+            my_ds_keys = []
+            my_dd_keys = []
             my_data = []
             my_temp = []
-            my_vas = []
-            my_ds = []
-            my_dd = []
+            my_vas_data = []
+            my_ds_data = []
+            my_dd_data = []
   
-            my_vas_keys = '''
-ID,Name,RoadName,From,To,pvmt_analysis_section_id,Pavement_A,
-FilterColumn,maint_dis_nmbr,FunctionClass,dd_avg_fault_depth_qty,
-dd_avg_iri_qty,dd_avg_rut_depth,dd_distress_rating_nmbr,dd_faults_qty,
-dd_pvmt_condition_rating_nmbr,dd_pvmt_section_survey_year,dd_roughness_rating_nmbr,data_accum_direction,
-dd_data_orientation,pvmt_condition_rating_nmbr,pvmt_type_code,pvmt_type_desc	,
-left_shoulder_width_code,left_shoulder_width_desc,right_shoulder_width_code,right_shoulder_width_desc,
-road_type,route_id,pvmt_structure_nmbr,pvmt_type_code_clustering,
-section_lane_cnt,section_total_lanes,survey_avg_lane_width,total_roadway_width_code,
-total_roadway_width_desc,county_name,county_nmbr,create_date,
-create_user,update_date,update_user,divided_hwy_ind,
-Budget_Category_Override,com_cost,com_treat,com_year,
-Comments,EOLD,ESAL,RD_Name,RT_Class,Reversed,SRI,SRI_From,SRI_To,
-Segment,Segment_Length,Trt_Family,Year,anl_chip_seal,anl_rural,anlss_sctn_annual_flex_esal,
-anlss_sctn_annual_rigid_esal,anlss_sctn_cumul_flex_esal,anlss_sctn_cumul_rigid_esal,begin_english_station_nmbr,
-begin_landmark_desc,begin_lat,begin_long,dFragWithSkip_Cluster,design_lane_width,document_id,
-end_english_station_nmbr,end_landmark_desc,end_lat,end_long,esal_aadt,esal_flexible_annual,
-esal_kip_factor,esal_pct_trucks,esal_rigid_annual,full_annual_flexible_esal,full_annual_rigid_esal,
-full_cumulative_flexible_esal,full_cumulative_rigid_esal,max_design_hourly_vol,max_design_hourly_vol_year,
-max_trffc_growth_rate,max_trffc_section_aadt,max_trffc_section_aadt_year,max_truck_trffc_pct,
-measured_section_length,paved_shoulder_ind,ph_pvmt_proj_actl_end_date,ph_pvmt_rehab_affctd_srfc_pct,
-ph_rehab_thickness,ph_rehab_type_code,ph_resurfacing_type_code,plan_section_length,pvmt_analysis_section_id_ ,
-pvmt_anlyss_sctn_nhs_ind,pvmt_mdfd_structure_nmbr,pvmt_memo,pvmt_pre_type_code,traffic_esal_base_year,weight'''
 
-            my_ds_keys = '''ID,Name,RoadName,From,To,pvmt_analysis_section_id,ds_Alligator_Cracking_0,ds_Alligator_Cracking_1,ds_Alligator_Cracking_2,ds_Bleeding_0,ds_Bleeding_1,ds_Bleeding_2,ds_Block_Cracking_0	,ds_Block_Cracking_1
-,ds_Block_Cracking_2	,ds_Blowup_0	,ds_Blowup_1	,ds_Blowup_2	,ds_Corner_Break_0,ds_Corner_Break_1	,ds_Corner_Break_2	,ds_D_Cracking_0	,ds_D_Cracking_1	,ds_D_Cracking_2
-,ds_Edge_Cracking_0	,ds_Edge_Cracking_1	,ds_Edge_Cracking_2	,ds_Faulting_0,ds_Faulting_1	,ds_Faulting_2	,ds_IRI_0	,ds_IRI_1	,ds_IRI_2	,ds_Joint_Count_0,ds_Joint_Count_1	,ds_Joint_Count_2	,ds_Joint_Deterioration_0	,ds_Joint_Deterioration_1
-,ds_Joint_Deterioration_2	,ds_Joint_Seal_Deterioration_0	,ds_Joint_Seal_Deterioration_1,ds_Joint_Seal_Deterioration_2	,ds_Lane_Shoulder_Dropoff_0	,ds_Lane_Shoulder_Dropoff_1,ds_Lane_Shoulder_Dropoff_2	,ds_Longitudinal_Cracking_0	,ds_Longitudinal_Cracking_1
-,ds_Longitudinal_Cracking_2	,ds_Map_Cracking_0	,ds_Map_Cracking_1	,ds_Map_Cracking_2,ds_Patching_0	,ds_Patching_1	,ds_Patching_2	,ds_Potholes_0	,ds_Potholes_1,ds_Potholes_2	,ds_Pumping_0	,ds_Pumping_1	,ds_Pumping_2	,ds_Punchouts_0
-,ds_Punchouts_1	,ds_Punchouts_2	,ds_Raveling_0	,ds_Raveling_1	,ds_Raveling_2,ds_Refl_Crack_Transverse_0	,ds_Refl_Crack_Transverse_1	,ds_Refl_Crack_Transverse_2
-,ds_Reflective_Cracking_Long_0	,ds_Reflective_Cracking_Long_1	,ds_Reflective_Cracking_Long_2,ds_Rutting_0	,ds_Rutting_1	,ds_Rutting_2	,ds_Slab_Replacement	,ds_Slab_Replacement_0
-,ds_Slab_Replacement_1	,ds_Spalling_Longitudinal_0	,ds_Spalling_Longitudinal_1,ds_Spalling_Longitudinal_2	,ds_Spalling_Transverse_0	,ds_Spalling_Transverse_1
-,ds_Spalling_Transverse_2	,ds_Transverse_Cracking_0	,ds_Transverse_Cracking_1,ds_Transverse_Cracking_2	,ds_Slab_Replacement_2'''
-
-            my_dd_keys = '''ID,Name,RoadName,From,To,pvmt_analysis_section_id,dd_Alligator_Cracking_0	,dd_Alligator_Cracking_1	,dd_Alligator_Cracking_2 ,dd_Bleeding_0	,dd_Bleeding_1	,dd_Bleeding_2	,dd_Block_Cracking_0
-,dd_Block_Cracking_1	,dd_Block_Cracking_2	,dd_Blowup_0	,dd_Blowup_1,dd_Blowup_2	,dd_Corner_Break_0	,dd_Corner_Break_1	,dd_Corner_Break_2,dd_D_Cracking_0	,dd_D_Cracking_1	,dd_D_Cracking_2	,dd_Edge_Cracking_0
-,dd_Edge_Cracking_1	,dd_Edge_Cracking_2	,dd_Faulting_0	,dd_Faulting_1,dd_Faulting_2	,dd_IRI_0	,dd_IRI_1	,dd_IRI_2,dd_Joint_Count_0	,dd_Joint_Count_1	,dd_Joint_Count_2	,dd_Joint_Deterioration_0
-,dd_Joint_Deterioration_1	,dd_Joint_Deterioration_2	,dd_Joint_Seal_Deterioration_0,dd_Joint_Seal_Deterioration_1	,dd_Joint_Seal_Deterioration_2	,dd_Lane_Shoulder_Dropoff_0,dd_Lane_Shoulder_Dropoff_1	,dd_Lane_Shoulder_Dropoff_2	,dd_Longitudinal_Cracking_0
-,dd_Longitudinal_Cracking_1	,dd_Longitudinal_Cracking_2	,dd_Map_Cracking_0,dd_Map_Cracking_1	,dd_Map_Cracking_2	,dd_Patching_0	,dd_Patching_1	,dd_Patching_2,dd_Potholes_0	,dd_Potholes_1	,dd_Potholes_2	,dd_Pumping_0	,dd_Pumping_1
-,dd_Pumping_2	,dd_Punchouts_0	,dd_Punchouts_1	,dd_Punchouts_2	,dd_Punchouts_ph,dd_Raveling_0	,dd_Raveling_1	,dd_Raveling_2	,dd_Refl_Crack_Transverse_0,dd_Refl_Crack_Transverse_1	,dd_Refl_Crack_Transverse_2	,dd_Reflective_Cracking_Long_0
-,dd_Reflective_Cracking_Long_1	,dd_Reflective_Cracking_Long_2	,dd_Rutting_0	,dd_Rutting_1,dd_Rutting_2	,dd_Slab_Replacement	,dd_Slab_Replacement_0	,dd_Slab_Replacement_1,dd_Spalling_Longitudinal_0	,dd_Spalling_Longitudinal_1	,dd_Spalling_Longitudinal_2
-,dd_Spalling_Transverse_0	,dd_Spalling_Transverse_1	,dd_Spalling_Transverse_2,dd_Transverse_Cracking_0	,dd_Transverse_Cracking_1	,dd_Transverse_Cracking_2,dd_Slab_Replacement_2'''
         
-            my_vas_keys2 = []
-            for item in my_vas_keys.split(','):
-                my_vas_keys2.append(item)
-
-            my_ds_keys2 = []
-            for item in my_ds_keys.split(','):
-                my_ds_keys2.append(item)
-
-            my_dd_keys2 = []
-            for item in my_dd_keys.split(','):
-                my_dd_keys2.append(item)
-
+  
             db = self.my_db_tables.VAnalysis_Sections
             
-            #stmt = sa.select(db).filter(db.c.RoadName == self.my_sri) 
-          
-            #results = self.my_session.execute(stmt)
-
-            #for item in results.keys():
-            #    my_keys.append(item)
-            #    print(item)
-
-                        
-            #for item in results:
-            #    my_data.append(item)
+ 
            
             stmt = sa.select(db.c.id,db.c.Name,db.c.RoadName,db.c.From,db.c.To,db.c.pvmt_analysis_section_id,db.c.Pavement_A,
 db.c.FilterColumn,db.c.maint_dis_nmbr,db.c.FunctionClass,db.c.dd_avg_fault_depth_qty,db.c.dd_avg_iri_qty,
@@ -266,9 +215,11 @@ db.c.pvmt_pre_type_code,db.c.traffic_esal_base_year,db.c.weight
           
             results1 = self.my_session.execute(stmt)
             
+            for item1 in results1.keys():
+                my_vas_keys.append(item1)
+              
             for item1 in results1:
-                my_vas.append(item1)
-               
+                my_vas_data.append(item1)
 
 
 
@@ -301,8 +252,11 @@ db.c.pvmt_pre_type_code,db.c.traffic_esal_base_year,db.c.weight
 
             results2 = self.my_session.execute(stmt)
             
+            for item2 in results2.keys():
+                my_ds_keys.append(item2)
+
             for item2 in results2:
-                my_ds.append(item2)
+                my_ds_data.append(item2)
                
 
 
@@ -337,28 +291,29 @@ db.c.pvmt_pre_type_code,db.c.traffic_esal_base_year,db.c.weight
 
             results3 = self.my_session.execute(stmt)
 
+            for item3 in results3.keys():    
+                my_dd_keys.append(item3)
+               
+
             for item3 in results3:    
-                my_dd.append(item3)
-                #print(item3)
+                my_dd_data.append(item3)
+               
             
          
             self.VAS_tableWidget.clearContents()
             self.VAS_DS_tableWidget.clearContents()
             self.VAS_DD_tableWidget.clearContents()
             
-            tableCreate2(self.VAS_tableWidget,my_vas_keys2, my_vas)
-            tableCreate2(self.VAS_DS_tableWidget,my_ds_keys2, my_ds)
-            tableCreate2(self.VAS_DD_tableWidget,my_dd_keys2, my_dd)
+            tableCreate2(self.VAS_tableWidget,my_vas_keys, my_vas_data)
+            tableCreate2(self.VAS_DS_tableWidget,my_ds_keys, my_ds_data)
+            tableCreate2(self.VAS_DD_tableWidget,my_dd_keys, my_dd_data)
             
             self.VAS_tableWidget.viewport().update()
             self.VAS_DS_tableWidget.viewport().update()
             self.VAS_DD_tableWidget.viewport().update()
 
             self.tabWidget.setCurrentIndex(0)
-           
-           
-            
-                     
+        
             
         else:
             pass

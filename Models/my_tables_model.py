@@ -1,6 +1,4 @@
 
-
-
 from sqlalchemy import create_engine, MetaData,Table
 from sqlalchemy.orm import sessionmaker,scoped_session
 from sqlalchemy.ext.declarative import declarative_base
@@ -118,6 +116,7 @@ def gather_tables(my_self):
             my_self.my_db_tables.MDOTDistresses = Table('MDOTDistresses', metadata,autoload_with = engine) 
             my_self.my_db_tables.VCounty = Table('VCountyNames',metadata, autoload_with = engine)
             my_self.my_db_tables.MDOTLOG = Table('MDOTLOG',metadata,autoload_with = engine)
+
             errorflag = 0
         else:
 
@@ -210,12 +209,12 @@ def gather_tables(my_self):
     return errorflag
 
 def get_table_county(my_self):
-   
-    engine = create_engine(my_self.url)
+       
+    engine = create_engine(my_self.my_url)
     metadata = MetaData()
     errorflag = -1
     try:
-        if my_self.database_type == 0:
+        if my_self.my_login.database_type == 0:
              
             my_self.my_db_tables.VCounty = Table('VCountyNames', metadata,autoload_with = engine) 
             errorflag = 0   
@@ -224,13 +223,12 @@ def get_table_county(my_self):
             my_self.my_db_tables.VCounty = Table('VCountyNames', metadata,autoload_with = engine) 
             errorflag = 0
             pass
-
+    
     except sa.exc.SQLAlchemyError as ex:
         errorflag = -1
         pass
 
     return errorflag
-
 
 def get_table_route(my_self):
    
@@ -254,7 +252,6 @@ def get_table_route(my_self):
 
     return errorflag
 
-
 def get_table_direction(my_self):
    
     engine = create_engine(my_self.url)
@@ -268,50 +265,6 @@ def get_table_direction(my_self):
             pass
         else:   
             my_self.VBase = Table('VBase', metadata,autoload_with = engine) 
-            errorflag = 0
-            pass
-
-    except sa.exc.SQLAlchemyError as ex:
-        errorflag = -1
-        pass
-
-    return errorflag
-
-def get_table_VAS(my_self):
-   
-    engine = create_engine(my_self.url)
-    metadata = MetaData()
-    errorflag = -1
-    try:
-        if my_self.database_type == 0:
-             
-            my_self.VAnalysis_Sections = Table('VAnalysis_Sections', metadata,autoload_with = engine) 
-            errorflag = 0   
-            pass
-        else:   
-            my_self.VAnalysis_Sections = Table('VAnalysis_Sections', metadata,autoload_with = engine) 
-            errorflag = 0
-            pass
-
-    except sa.exc.SQLAlchemyError as ex:
-        errorflag = -1
-        pass
-
-    return errorflag
-
-def get_table_analysis_sections(my_self):
-   
-    engine = create_engine(my_self.url)
-    metadata = MetaData()
-    errorflag = -1
-    try:
-        if my_self.database_type == 0:
-             
-            my_self.Analysis_Sections = Table('Analysis_Sections', metadata,autoload_with = engine) 
-            errorflag = 0   
-            pass
-        else:   
-            my_self.Analysis_Sections = Table('Analysis_Sections', metadata,autoload_with = engine) 
             errorflag = 0
             pass
 

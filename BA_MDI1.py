@@ -46,6 +46,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.login_flag = False
         self.my_db_tables = db_tables
         
+        
         self.index = 0
         # Setup main window.
         self.setWindowTitle(self.AppTitle)
@@ -166,9 +167,7 @@ class MainWindow(QtWidgets.QMainWindow):
             "<p>Authors: ...</p>").format(self.AppTitle, self.AppVersion)
         )
 
-    #def onWatchdogEvent(self):
-    #    """Perform checks in regular intervals."""
-    #    self.mdiArea.checkTimestamps()
+   
 
 
     def onLogin(self):
@@ -334,7 +333,6 @@ class MdiArea(QtWidgets.QWidget):
         document.fileLoaded.connect(self.onFileLoaded)
         sub = QtWidgets.QMdiSubWindow()
         sub.setWidget(document)
-
       
         return sub
 

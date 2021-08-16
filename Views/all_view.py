@@ -229,6 +229,7 @@ class VAS_view(Ui_VAS_Form):
         c1 = county_select(self)
         self.comboBoxCounty.addItems(c1.get_county())
 
+
     def setup_route(self):
         if self.comboBoxCounty.currentIndex == 0:
             

@@ -1,7 +1,7 @@
 
 
 
-from Models.my_tables_model import get_table_county, get_table_route, get_table_direction, get_table_VAS,get_table_analysis_sections
+from Models.my_tables_model import get_table_county, get_table_route, get_table_direction
 from Controllers.controller import connectToDatabase
 from sqlalchemy import select
 import sqlalchemy as sa
@@ -14,7 +14,7 @@ my_url = f'oracle+cx_oracle://USER_MISS:password@ORACLEDEV01:1521/GISDEV'
 debug_session = False
 
 class county_select():
-    def __init__(self,my_self = None):
+    def __init__(self,my_self = None ):
         if debug_session == True:
             self.my_url = my_url
             self.my_db_tables = db_tables  
@@ -33,11 +33,10 @@ class county_select():
             
                    
     def get_county(self):
-              
         my_list = [''] 
         db = self.my_db_tables.VCounty
-            #results = self.session.query(self.VCounty).filter_by(id=1)
-            #results = self.session.query(self.VCounty).all()
+        #results = self.session.query(self.VCounty).filter_by(id=1)
+        #results = self.session.query(self.VCounty).all().order_by()
         stmt = select(db.c.county_name).order_by(db.c.county_name)
         results = self.my_session.execute(stmt)
         for item in results.scalars():
@@ -46,7 +45,6 @@ class county_select():
             pass
            
         return my_list
-  
 
 class route_select():
     def __init__(self,my_self = None):

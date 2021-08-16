@@ -149,8 +149,6 @@ def tableCreate2(my_table,my_header,my_data):
     header = my_table.horizontalHeader()
     header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
     
-    
-
 def tableCreate3(my_table,my_header,my_fields,my_data):
     horHeaders = []
     hideheader = ['ElementID','ID','id','Name','RoadName','From','To','pvmt_analysis_section_id','NetworkID','Lane','Historic','Order','Length','FromMeasure','ToMeasure','FromElement','FromOffset','ToElement','ToOffset' \
@@ -206,6 +204,9 @@ def tableCreate3(my_table,my_header,my_fields,my_data):
 
     header = my_table.horizontalHeader()
     header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+
+
+    
    
     
         
