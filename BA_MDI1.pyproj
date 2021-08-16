@@ -1,0 +1,131 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>4b83b121-c36c-4e16-a066-5f59fc95f92a</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>BA_MDI1.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>BA_MDI1</Name>
+    <RootNamespace>BA_MDI1</RootNamespace>
+    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="BA_MDI1.py" />
+    <Compile Include="BA_MDI1_ORG.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="buildmenuviews\login_menu.py" />
+    <Compile Include="buildmenuviews\menus1.py" />
+    <Compile Include="buildmenuviews\menus2.py" />
+    <Compile Include="Controllers\controller.py" />
+    <Compile Include="Controllers\cont_ms_roadbase.py" />
+    <Compile Include="Controllers\orm_select.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\MDIChild1.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\myDocument.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\my_MDIArea.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="helpers\helpers1.py" />
+    <Compile Include="helpers\mmenus.py" />
+    <Compile Include="Models\tableModel.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\copy_sections_ui.py" />
+    <Compile Include="Views\editmenu.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\EditVAS_ui.py" />
+    <Compile Include="Views\move_sections_ui.py" />
+    <Compile Include="Views\RouteProjectEntry_ui.py" />
+    <Compile Include="Views\sample_login.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\login_model.py" />
+    <Compile Include="originals\ms_base_model.py" />
+    <Compile Include="Models\my_tables_model.py" />
+    <Compile Include="originals\or_base_model.py" />
+    <Compile Include="originals\login.py" />
+    <Compile Include="Views\simple_edit_ui.py" />
+    <Compile Include="Views\split_sections_ui.py" />
+    <Compile Include="Views\tweak_sections_ui.py" />
+    <Compile Include="Views\VCRHVCRLDVPROJ_view_ui.py" />
+    <Compile Include="Views\VCRH_Edit_ui.py" />
+    <Compile Include="Views\all_view.py" />
+    <Compile Include="Views\VAS_view.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\VAS_view_ui.py" />
+    <Compile Include="Views\VCRH_view_ui.py" />
+    <Compile Include="Views\VCRLD_Edit_ui.py" />
+    <Compile Include="Views\VProj_Edit_ui.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="buildmenuviews\" />
+    <Folder Include="helpers\" />
+    <Folder Include="originals\" />
+    <Folder Include="Views\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="buildmenuviews\menus1.ui" />
+    <Content Include="buildmenuviews\VAS_menu.ui" />
+    <Content Include="originals\Login.ui" />
+    <Content Include="originals\logintopy.bat" />
+    <Content Include="originals\main_ui.ui" />
+    <Content Include="Views\copy_sections_ui.ui" />
+    <Content Include="Views\EditVAS_ui.ui" />
+    <Content Include="Views\mainrebuild.bat" />
+    <Content Include="Views\main_ui.ui" />
+    <Content Include="Views\move_sections_ui.ui" />
+    <Content Include="Views\pysideuic.bat" />
+    <Content Include="Views\RouteProjectEntry_ui.ui" />
+    <Content Include="Views\simple_edit_ui.ui" />
+    <Content Include="Views\split_sections_ui.ui" />
+    <Content Include="Views\tweak_sections_ui.ui" />
+    <Content Include="Views\VAS_view_ui.ui" />
+    <Content Include="Views\VCRHVCRLDVPROJ_view_ui.ui" />
+    <Content Include="Views\VCRH_Edit_ui.ui" />
+    <Content Include="Views\VCRH_view.ui" />
+    <Content Include="Views\VCRLD_Edit_ui.ui" />
+    <Content Include="Views\VProj_Edit_ui.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <Interpreter Include="env\">
+      <Id>env</Id>
+      <Version>3.7</Version>
+      <Description>env (Python 3.7 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+  <!-- Uncomment the CoreCompile target to enable the Build command in
+       Visual Studio and specify your pre- and post-build commands in
+       the BeforeBuild and AfterBuild targets below. -->
+  <!--<Target Name="CoreCompile" />-->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>
