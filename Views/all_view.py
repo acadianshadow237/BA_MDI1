@@ -86,8 +86,8 @@ class VAS_view(Ui_VAS_Form):
                 ID = self.VAS_tableWidget.item(self.my_row,0).text()
                 fieldName = self.VAS_tableWidget.horizontalHeaderItem(self.my_column).text()
                 fieldCurrentValue = self.VAS_tableWidget.item(self.my_row,self.my_column).text()
-
-                simpleedit = simpleEdits(ID,fieldName,fieldCurrentValue,tableName)
+                url =self.my_url
+                simpleedit = simpleEdits(ID,fieldName,fieldCurrentValue,tableName,url)
 
                 simpleedit.exec_()
 

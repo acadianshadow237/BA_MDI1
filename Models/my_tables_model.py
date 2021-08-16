@@ -281,7 +281,7 @@ def get_table_log(url):
     errorflag = -1
     try:
       
-        logLink = Table('MDOTLOG', metadata,autoload_with = engine) 
+        tableLink = Table('MDOTLOG', metadata,autoload_with = engine) 
         errorflag = 0   
        
 
@@ -290,7 +290,57 @@ def get_table_log(url):
         return errorflag
         pass
 
-    return logLink
+    return tableLink
+
+def get_table_lookup(url):
+
+    engine = create_engine(url)
+    metadata = MetaData()
+    errorflag = -1
+    try:
+      
+        tableLink = Table('MDOTLOG', metadata,autoload_with = engine) 
+        errorflag = 0   
+       
+
+    except sa.exc.SQLAlchemyError as ex:
+        errorflag = -1
+        return errorflag
+        pass
+
+    return tableLink    
+
+def get_table_link(url,table_Name,field_name):
+
+    engine = create_engine(url)
+    metadata = MetaData()
+    errorflag = -1
+    tableName = table_Name
+    fieldName = field_name
+    lutype = None
+    luval = None
+
+    try:
+      
+        #tableLink = Table("MDOTLookups", metadata,autoload_with = engine) 
+        errorflag = 0   
+        stmt = f'select "related_lookup_type","related_lookup_value" from "MDOTLookups" where "related_table_name" = '
+        stmt = stmt +'\'%s\' and "related_field_name" = \'%s\'' %(tableName,fieldName)
+        conn = engine.connect()
+        results = conn.execute(stmt)
+        for i in results:
+            lutype = i[0]
+            luval = i[1]
+
+       
+
+    except sa.exc.SQLAlchemyError as ex:
+        errorflag = -1
+        return errorflag
+        pass
+
+    return lutype, luval
+   
 
     
 

@@ -18,6 +18,7 @@ from Controllers.orm_select import county_select, route_select, direction_select
 from Controllers.controller import simpleUpdate
 from Models.login_model import login_stuff
 from Models.tableModel import MyTableModel , tableCreate2, tableCreate3
+from Models.my_tables_model import get_table_link
 import sqlalchemy as sa
 
 
@@ -831,10 +832,11 @@ db.c.FilterColumn).filter(db.c.RoadName == self.my_sri)
 
 class simpleEdits(Ui_DialogSimpleEdit):
     
-    def __init__(self,ID,fieldName,fieldCurrentValue,tableName):
+    def __init__(self,ID,fieldName,fieldCurrentValue,tableName,url):
         super(simpleEdits, self).__init__()
         self.setupUi(self)
 
+        self.url = url
         self.ID = ID
         self.fieldName = fieldName
         self.fieldCurrentValue = fieldCurrentValue
@@ -843,12 +845,20 @@ class simpleEdits(Ui_DialogSimpleEdit):
         self.lineEditFieldName.setText(self.fieldName)
         self.lineEditFieldCurrentValue.setText(self.fieldCurrentValue)
 
+        self.load_table()
+
     def onSave(self):
         newValue = self.lineEditFieldNewValue.text()
         if newValue == None:
             return
         else:    
             simpleUpdate(self.ID,self.fieldName,newValue,self.tableName)
+        pass
+
+    def load_table(self):
+        
+        lutype,luval = get_table_link(self.url,self.tableName,self.fieldName)
+
         pass
 
     
