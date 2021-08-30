@@ -88,7 +88,6 @@ class VAS_view(Ui_VAS_Form):
                 fieldCurrentValue = self.VAS_tableWidget.item(self.my_row,self.my_column).text()
                 url =self.my_url
                 simpleedit = simpleEdits(ID,fieldName,fieldCurrentValue,tableName,url)
-
                 simpleedit.exec_()
 
     def editVASRow(self):

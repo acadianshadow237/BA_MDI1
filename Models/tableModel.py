@@ -3,6 +3,7 @@
 from datetime import datetime,date
 from PySide6 import QtCore
 from PySide6 import QtWidgets
+import sqlalchemy as sa
                 
 class MyTableModel(QtCore.QAbstractTableModel):
     def __init__(self, parent, mylist, header, *args):
@@ -111,7 +112,6 @@ def tableCreate2(my_table,my_header,my_data):
     for item in hideheader:
         hideheaders2.append(item.strip())  
     
-
     my_table.setRowCount(len(my_data))
    
     
@@ -205,8 +205,37 @@ def tableCreate3(my_table,my_header,my_fields,my_data):
     header = my_table.horizontalHeader()
     header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
 
+    
+def simpleeditCreateTable(mtable, mheader,mtype,mdata):
 
+
+
+    my_data_list = []
+
+    my_table = mtable
+    my_header = []
+    my_data = mdata
+    my_type = mtype
     
-   
     
+    if my_type == 'LIST':
+        for item in my_data.split(','):
+            my_data_list.append(item)
+       
+        my_header.append(mheader) 
+        pass
+    
+    my_table.setColumnCount(len(my_header))
+    my_table.setHorizontalHeaderLabels(my_header)    
+    my_table.setRowCount(len(my_data_list))
+
+    for i,item in enumerate(my_data_list):
+
+        newitem = QtWidgets.QTableWidgetItem(item)
+        newitem.setFlags(QtCore.Qt.ItemIsEditable)
+        my_table.setItem(i,0, newitem)
         
+    header = my_table.horizontalHeader()
+    header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+
+

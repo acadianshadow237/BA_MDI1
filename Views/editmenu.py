@@ -15,10 +15,10 @@ from Views.copy_sections_ui import Ui_DialogCopySections
 from Views.simple_edit_ui import Ui_DialogSimpleEdit
 
 from Controllers.orm_select import county_select, route_select, direction_select, VAS_select
-from Controllers.controller import simpleUpdate
+#from Controllers.controller import simpleUpdate
 from Models.login_model import login_stuff
-from Models.tableModel import MyTableModel , tableCreate2, tableCreate3
-from Models.my_tables_model import get_table_link
+from Models.tableModel import MyTableModel , tableCreate2, tableCreate3, simpleeditCreateTable
+from Models.my_tables_model import get_table_link,simpleUpdate
 import sqlalchemy as sa
 
 
@@ -623,8 +623,7 @@ db.c.FilterColumn).filter(db.c.RoadName == self.my_sri)
 class copySections(Ui_DialogCopySections):
     def __init__(self,my_self):
         super(copySections, self).__init__()
-           
-       
+               
         self.mdiArea = my_self.mdiArea
 
         self.index = 0
@@ -791,10 +790,8 @@ db.c.FilterColumn).filter(db.c.RoadName == self.my_sri)
                 my_vas.append(item1)
  
             self.tableWidget.clearContents()
-           
-            
+                       
             tableCreate2(self.tableWidget,my_vas_keys, my_vas)
-            
             
             self.tableWidget.viewport().update()
      
@@ -840,26 +837,60 @@ class simpleEdits(Ui_DialogSimpleEdit):
         self.ID = ID
         self.fieldName = fieldName
         self.fieldCurrentValue = fieldCurrentValue
-        self.tableName = tableName
+        self.outsideTableName = tableName
         self.pushButtonSave.clicked.connect(self.onSave)
         self.lineEditFieldName.setText(self.fieldName)
         self.lineEditFieldCurrentValue.setText(self.fieldCurrentValue)
-
+        self.lutype = ''
+        self.luval = []
+        self.my_row = None
+        self.my_column = None
         self.load_table()
 
+        self.tableWidget.cellClicked.connect(self.selectRow)
+
     def onSave(self):
-        newValue = self.lineEditFieldNewValue.text()
-        if newValue == None:
+        my_newValue = self.lineEditFieldNewValue.text()
+        if my_newValue == None:
             return
         else:    
-            simpleUpdate(self.ID,self.fieldName,newValue,self.tableName)
+            message = check_newValue(self.url,self.outsideTableName,self.fieldName,my_newValue)
+            if message == 'Data is Good!':
+                simpleUpdate(self.url,self.outsideTableName,self.ID,self.fieldName,my_newValue)
+            else:
+                return
         pass
 
     def load_table(self):
         
-        lutype,luval = get_table_link(self.url,self.tableName,self.fieldName)
+        self.lutype,self.luval = get_table_link(self.url,self.outsideTableName,self.fieldName)
+        
+        if self.luval == -1 or self.lutype == -1:
+            return
 
-        pass
+        if self.lutype == 'LIST':
+            simpleeditCreateTable(self.tableWidget,str(self.fieldName),self.lutype,self.luval)
+            pass
+        if self.lutype == 'DLIST':
+            pass
+        if self.lutype == 'FACT':
+            pass
+            
+        
+    def selectRow(self,row,column):
+        self.my_row = row
+        self.my_column = column
+
+        if self.lutype == 'LIST':
+            clearColorRow(self.tableWidget,QtGui.QColor(255,255,255))
+            setColorRow(self.tableWidget,row,QtGui.QColor(211,211,211))
+            self.lineEditFieldNewValue.clear
+            
+            self.lineEditFieldNewValue.setText(self.tableWidget.item(self.my_row,0).text())
+
+        else:
+            pass
+        
 
     
 

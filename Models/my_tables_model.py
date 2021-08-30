@@ -332,14 +332,86 @@ def get_table_link(url,table_Name,field_name):
             lutype = i[0]
             luval = i[1]
 
-       
 
     except sa.exc.SQLAlchemyError as ex:
         errorflag = -1
-        return errorflag
+        return errorflag,-1
         pass
 
     return lutype, luval
+
+def check_newValue(url,table_Name,field_Name,new_Value):
+
+    engine = create_engine(url)
+    metadata = MetaData()
+    errorflag = -1
+    tableName = table_Name
+    fieldName = field_Name
+    luval = None
+    newValueList = []
+    checkValueList = []
+
+    try:
+       #tableLink = Table("MDOTLookups", metadata,autoload_with = engine) 
+        errorflag = 0   
+        stmt = f'select "related_lookup_value" from "MDOTLookups" where "related_table_name" = '
+        stmt = stmt +'\'%s\' and "related_field_name" = \'%s\'' %(tableName,fieldName)
+        conn = engine.connect()
+        results = conn.execute(stmt)
+        for i in results:
+            luval = i
+
+        if luval == None:
+            return 'Data for %s not found!'%(fieldName)
+
+        for item in luval.split(','):
+            checkValueList.append(item)
+
+        newValueList.append(newValue)
+
+        if newValueList in checkValueList:
+            return 'Data is Good!'
+        else:
+            return 'Data not in %s'%(luval)
+        
+        
+
+    except:
+        errorflag = -1
+        return errorflag,-1
+        pass
+
+
+
+
+def simpleUpdate(url, table_Name,ID, field_Name, newValue):
+    
+    engine = sa.create_engine(url)
+    cmd = engine.connect()   
+   
+    
+    if nfieldName.strip() == None or ID.strip() == None or tableName.strip() == None:
+        return
+    else:
+
+        fieldID = ID.strip()
+        fieldName = field_Name.strip()
+        fieldNewValue = newValue.strip()
+        fieldTableName = table_Name.strip()
+        my_fieldTable = ''
+        
+        if fieldTable[0] == 'V':
+            my_fieldTable = fieldTable[1:]
+
+    
+    my_sql= 'update "'+ fieldTableName +'" set "' + fieldName +'" = '+ fieldNewValue + ' where "ID" = ' + '\'' +fieldID +'\''
+    #print(my_sql)
+    cmd.execute(my_sql)
+    cmd.execute('commit')
+    cmd.close()
+
+
+    
    
 
     

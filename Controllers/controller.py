@@ -40,20 +40,6 @@ def check_db_exists(current_self):
    
     
 
-def simpleUpdate(ID,nfieldName,newValue,tableName):
-
-    if nfieldName.strip() == None or ID.strip() == None or tableName.strip() == None:
-        return
-    else:
-
-        fieldID = ID.strip()
-        fieldName = nfieldName.strip()
-        fieldNewValue = newValue.strip()
-        fieldTable = tableName.strip()
-
-    my_sql= 'update "'+ fieldTable +'" set "' + fieldName +'" = '+ fieldNewValue + ' where "ID" = ' + '\'' +fieldID +'\''
-    print(my_sql)
-
 
 def writeLog(currentLog):
         pass
